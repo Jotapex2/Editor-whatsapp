@@ -1,0 +1,65 @@
+{'_bz2.pyd': bytearray(b'\x84\xf2\xaaV\xe5\x88I\xcf0\xe62\xe7\xea\xabI\x01'
+                       b'\xa6\x81\xf0\x8c'),
+ '_ctypes.pyd': bytearray(b'\xfb\xa0;\xbf\x84L\x08\xcc\xf2\x08T\xd7'
+                          b'\x17\xa8O\xa6*\xb2\x91\xfd'),
+ '_decimal.pyd': bytearray(b'A\xe0\xbbp\xc6\xd0\x8f\xd6F\xfe\x01\x00'
+                           b'\x06\x8d\xac\xc4\xd1\xa4\xac\xe8'),
+ '_elementtree.pyd': bytearray(b'\xffE\x0e\x87\xa5O\x95\xdd\n\xa8w\xad'
+                               b'\xcd\xf69cio~y'),
+ '_hashlib.pyd': bytearray(b'\xaa\xaf\xd1\xee\x00\xd2\xdak\xdb\xaa\xd0\x0e'
+                           b'\xf7\x8f\x8f\xdf\x99\x86_^'),
+ '_lzma.pyd': bytearray(b'\xef\x19\x84i\x89\xf37\xe6\x00\xc8\xf9\xcc\xac\xbdBv'
+                        b'\xccM5\xf0'),
+ '_socket.pyd': bytearray(b'h`\x00\x11\x7f\x1d\xc4r\xea\x80\x12\xa76\x8c\x93k'
+                          b'\xd0M\xed\x08'),
+ '_ssl.pyd': bytearray(b'\x9e\x86\x98_|\xf1\x11e\xa7s\xa3>\xfa\xff4='
+                       b'\xa0\xe3O\x00'),
+ '_tkinter.pyd': bytearray(b'\x8c\xde\x9a\x9aa\xfa\x93\xd3\x17%\xf6\xf8'
+                           b'\x8e\x8d\rU\xe9veT'),
+ '_wmi.pyd': bytearray(b'o5\x93&E\x8d7\xc2f$K*\xb6t\xd3\xcc\xe7\xa7n\x1c'),
+ '_zstd.pyd': bytearray(b'-\xae\xe26\x00\x9c\xc3\xef\xe0-\xc9\xbb\xbd\x8co\xaa'
+                        b'\x8a\xc5dx'),
+ 'libcrypto-3.dll': bytearray(b';\xd9\xeab\x94\xee\xbdE\xc8g\x17\x8b\xac\x0fOw'
+                              b'\xa4\x95%\xa9'),
+ 'libffi-8.dll': bytearray(b'\xc70\tu\xdf&{\x1dj\xdc\xba\xc0\xac\x93\xfd{'
+                           b'\x1a\xb4\x9b\xd2'),
+ 'libssl-3.dll': bytearray(b'\xd2\xffW\xbd\xca 07\x9d\xa6\xd2V\x89#P\xca'
+                           b'\x85\xa0A\x1f'),
+ 'pil\\_avif.cp314-win_amd64.pyd': bytearray(b'>=2DP\xc5eG\xc0\xe848\x91;^i'
+                                             b'\x86\x0e\xeb\xb7'),
+ 'pil\\_imaging.cp314-win_amd64.pyd': bytearray(b'\xe5\xed\xa6q\x92\xb3\x8f\x04'
+                                                b'a\xfa;,\xfe*\x19\xcd'
+                                                b'N\xe0\r\x8b'),
+ 'pil\\_imagingcms.cp314-win_amd64.pyd': bytearray(b'\x15\xed\xfd$/L\xfb>'
+                                                   b'\x90$\x03\xcb+\x02\xd0d'
+                                                   b'^}]\xc3'),
+ 'pil\\_imagingft.cp314-win_amd64.pyd': bytearray(b'%\x15\x02\xd6\x98\x1e\x7fy'
+                                                  b'\x8e\xf2;\xef]\xdf\xc03'
+                                                  b'(\xdc\x97\xff'),
+ 'pil\\_imagingmath.cp314-win_amd64.pyd': bytearray(b'f[\x94\x8d<\xbb/T'
+                                                    b'\x07\xadYl\x01\x9cA\x12'
+                                                    b'2\xcd\x18('),
+ 'pil\\_imagingtk.cp314-win_amd64.pyd': bytearray(b'\x05]Uk@u\x91\xb9'
+                                                  b'\xde\xd8\xa1\xd0r}\x9f\x81'
+                                                  b'\xf1\xf1~p'),
+ 'pil\\_webp.cp314-win_amd64.pyd': bytearray(b'\xc5\x9bcC\xa1\xb9\x82a'
+                                             b'I\xbdC\xa5\x862\xee\xd7'
+                                             b'5\xc0\xae\x89'),
+ 'pyexpat.pyd': bytearray(b'\xed\x1fB\x96\xa5\xdb\xb2\x96\x98\xc8\x8c\x10'
+                          b'\\\x08>\xe81h\xbc\x0e'),
+ 'python314.dll': bytearray(b'\xb2 K\x0b\xc98w\xfc\xd1\x86\xd7/\xbeP\x06\x13'
+                            b'\n\xa0\xfb\x88'),
+ 'select.pyd': bytearray(b'\xb12\x9b\x16\x87=\xb0\xf6g\xa5\xb1\xffk%p\xcf'
+                         b'\\\xb0\t\xba'),
+ 'tcl86t.dll': bytearray(b'"k\xf1\xcd\x0f\xc2\x89\x03M\x95y\xc9^\xe0\xfeM'
+                         b'\xf5\x0c\xc6\xb8'),
+ 'tk86t.dll': bytearray(b'\xda\xa89[\x9di\x1b]\xfb\xda\xa1\xf62VUZ'
+                        b'\x14\x01\x08\x91'),
+ 'unicodedata.pyd': bytearray(b'\xb1Y>\xf2\x02\xbb,\xa2\x04\x15g\xe9'
+                              b'\x86\xc0\x1b\xc2\x81\xa4i|'),
+ 'vcruntime140.dll': bytearray(b'.\xa8@\xa5\xfa\xa8z/\xe8\xd7\xe5\xcbCg\xf2A'
+                               b'\x80w\xd6k'),
+ 'vcruntime140_1.dll': bytearray(b'R?Q^\xed:\xf6\xd5\x0eW\xa3\xea\xeb\x90oL'
+                                 b'\xcc\x18e\xfe'),
+ 'zlib1.dll': bytearray(b'\xfd{\x1b\x01\xdc\x01\xa7\xf3+\xd5\x1f\x9a1\xbfq\x7f'
+                        b'MU\xd0\x9c')}
