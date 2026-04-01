@@ -56,6 +56,11 @@ Componentes principales:
 - `tk.Text`: motor real de edicion.
 - `ttk.Notebook`: contenedor de multiples documentos.
 
+Capacidades de integracion con Windows:
+
+- Apertura de archivos por argumento de linea de comandos para soportar `Abrir con` y menu contextual.
+- Impresion del documento actual mediante `notepad.exe /p` sobre un archivo temporal UTF-8 con BOM.
+
 No hay separacion por capas o modulos. La ventaja es simplicidad; la desventaja es acoplamiento alto y dificultad para testear partes aisladas.
 
 ## 5. Modelo de datos interno

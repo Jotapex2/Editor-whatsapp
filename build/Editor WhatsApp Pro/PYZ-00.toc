@@ -1,4 +1,5 @@
-('F:\\block wsp\\EditorWhatsapp\\build\\Editor WhatsApp Pro\\PYZ-00.pyz',
+('F:\\block wsp\\EditorWhatsapp\\Editor whatsapp\\build\\Editor WhatsApp '
+ 'Pro\\PYZ-00.pyz',
  [('PIL',
    'C:\\Users\\Juan\\AppData\\Roaming\\Python\\Python314\\site-packages\\PIL\\__init__.py',
    'PYMODULE-2'),

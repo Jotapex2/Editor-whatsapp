@@ -30,6 +30,14 @@ pip install -r requirements.txt
 python main.py
 ```
 
+Tambien acepta rutas de archivos como argumentos:
+
+```bash
+python main.py "C:\ruta\archivo.md"
+```
+
+Esto permite que Windows abra directamente un archivo cuando la app se invoca desde "Abrir con" o desde el menu contextual.
+
 ## Atajos disponibles
 
 - `Ctrl+C`: copiar seleccion reconstruyendo texto real y emojis embebidos.
@@ -38,6 +46,7 @@ python main.py
 - `Ctrl+Z`: deshacer.
 - `Ctrl+Y`: rehacer.
 - `Ctrl+F`: abrir Buscar y Reemplazar.
+- `Ctrl+P`: imprimir el documento actual usando el flujo de impresion de Windows.
 - `Ctrl+Click`: abrir enlace o correo; en telefonos copia el numero al portapapeles.
 - `Ctrl + rueda del mouse`: zoom.
 

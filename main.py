@@ -8,6 +8,8 @@ import ctypes
 import webbrowser
 import json
 import os
+import subprocess
+import tempfile
 
 import customtkinter as ctk
 import pyperclip
@@ -117,6 +119,7 @@ class WhatsAppEditor(ctk.CTk):
                 ("Abrir .md/.txt", self.open_file),
                 ("Guardar", self.save_file),
                 ("Guardar como", self.save_file_as),
+                ("Imprimir (Ctrl+P)", self.print_file),
                 ("Cerrar pestaña", self.close_current_tab),
                 ("Nueva pestaña", self.new_file),
             ],
@@ -257,9 +260,12 @@ class WhatsAppEditor(ctk.CTk):
 
         self.bind("<Configure>", self.on_window_resize)
         self.bind("<Control-f>", self.open_find_replace)
+        self.bind("<Control-p>", self.print_file)
+        self.bind("<Control-P>", self.print_file)
         
         if not self.load_session():
             self.new_file()
+        self.open_files_from_cli()
 
     @staticmethod
     def _resource_path(filename: str) -> Path:
@@ -468,6 +474,7 @@ class WhatsAppEditor(ctk.CTk):
 
     def create_document_tab(self, title: str = "Sin titulo", content: str = "", file_path: str | None = None):
         frame = tk.Frame(self.notebook, bg="white")
+        scrollbar = ttk.Scrollbar(frame, orient="vertical")
         text = tk.Text(
             frame,
             font=("Segoe UI", 13),
@@ -480,8 +487,11 @@ class WhatsAppEditor(ctk.CTk):
             borderwidth=0,
             highlightthickness=0,
             insertbackground="#25D366",
+            yscrollcommand=scrollbar.set,
         )
-        text.pack(fill="both", expand=True)
+        scrollbar.config(command=text.yview)
+        scrollbar.pack(side="right", fill="y")
+        text.pack(side="left", fill="both", expand=True)
 
         text.tag_configure("bold", font=("Segoe UI", 13, "bold"))
         text.tag_configure("italic", font=("Segoe UI", 13, "italic"))
@@ -1278,6 +1288,97 @@ class WhatsAppEditor(ctk.CTk):
         except Exception:
             return False
 
+    def open_files_from_cli(self):
+        cli_paths = self._extract_cli_paths()
+        if not cli_paths:
+            return
+        self.open_paths(cli_paths, replace_blank_doc=True)
+
+    def _extract_cli_paths(self) -> list[str]:
+        cli_paths: list[str] = []
+        for arg in sys.argv[1:]:
+            candidate = Path(arg).expanduser()
+            if candidate.exists() and candidate.is_file():
+                cli_paths.append(str(candidate.resolve()))
+        return cli_paths
+
+    def open_paths(self, paths, replace_blank_doc: bool = False):
+        normalized_paths = []
+        seen = set()
+        for raw_path in paths:
+            try:
+                path = str(Path(raw_path).expanduser().resolve())
+            except Exception:
+                path = str(raw_path)
+            if path in seen:
+                continue
+            seen.add(path)
+            normalized_paths.append(path)
+
+        if not normalized_paths:
+            return
+
+        blank_doc = None
+        if replace_blank_doc and len(self.documents) == 1:
+            candidate = self.documents[0]
+            if candidate.file_path is None and not candidate.is_modified:
+                message = self._reconstruct_message_from_editor(candidate).strip()
+                if not message:
+                    blank_doc = candidate
+
+        first_opened = None
+        for path in normalized_paths:
+            existing_doc = next((doc for doc in self.documents if doc.file_path and Path(doc.file_path) == Path(path)), None)
+            if existing_doc is not None:
+                self.notebook.select(existing_doc.frame)
+                first_opened = first_opened or existing_doc
+                continue
+
+            try:
+                content = Path(path).read_text(encoding="utf-8")
+            except UnicodeDecodeError:
+                try:
+                    content = Path(path).read_text(encoding="cp1252")
+                except Exception as exc:
+                    messagebox.showerror("Error", f"No se pudo abrir el archivo: {exc}")
+                    continue
+            except Exception as exc:
+                messagebox.showerror("Error", f"No se pudo abrir el archivo: {exc}")
+                continue
+
+            if blank_doc is not None:
+                self._load_content_into_doc(blank_doc, content, file_path=path)
+                first_opened = first_opened or blank_doc
+                blank_doc = None
+                continue
+
+            self.create_document_tab(title=Path(path).name, content=content, file_path=path)
+            first_opened = first_opened or self.current_doc()
+
+        if first_opened is not None:
+            self.notebook.select(first_opened.frame)
+            self.update_counters(doc=first_opened)
+
+    def _load_content_into_doc(self, doc: DocumentState, content: str, file_path: str | None = None):
+        doc.suspend_change_events = True
+        try:
+            doc.text.delete("1.0", tk.END)
+            doc.emoji_map.clear()
+            doc.emoji_counter = 0
+            doc.interactive_ranges.clear()
+            doc.message_cache = ""
+            doc.message_cache_dirty = True
+            if content:
+                self._insert_text_with_visual_emojis(doc, content)
+            doc.file_path = file_path
+            doc.is_modified = False
+            doc.last_highlight_source = ""
+            self.update_tab_title(doc)
+            self.schedule_syntax_highlighting(doc)
+            self.update_counters(doc=doc)
+        finally:
+            doc.suspend_change_events = False
+
     def save_session(self):
         data = []
         for doc in self.documents:
@@ -1410,27 +1511,7 @@ class WhatsAppEditor(ctk.CTk):
         paths = filedialog.askopenfilenames(filetypes=[("Markdown", "*.md"), ("Texto", "*.txt")])
         if not paths:
             return
-
-        for path in paths:
-            try:
-                content = Path(path).read_text(encoding="utf-8")
-            except UnicodeDecodeError:
-                try:
-                    content = Path(path).read_text(encoding="cp1252")
-                except Exception as exc:
-                    messagebox.showerror("Error", f"No se pudo abrir el archivo: {exc}")
-                    continue
-            except Exception as exc:
-                messagebox.showerror("Error", f"No se pudo abrir el archivo: {exc}")
-                continue
-
-            title = Path(path).name
-            self.create_document_tab(title=title, content=content, file_path=path)
-            doc = self.current_doc()
-            if doc:
-                doc.is_modified = False
-                self.update_tab_title(doc)
-                self.update_counters()
+        self.open_paths(paths)
 
     def _save_doc(self, doc: DocumentState) -> bool:
         if not doc.file_path:
@@ -1474,6 +1555,45 @@ class WhatsAppEditor(ctk.CTk):
         if ok:
             messagebox.showinfo("Exito", "Guardado correctamente.")
         return ok
+
+    def print_file(self, event=None):
+        doc = self.current_doc()
+        if doc is None:
+            return "break"
+
+        message = self._reconstruct_message_from_editor(doc)
+        if not message.strip():
+            messagebox.showwarning("Imprimir", "No hay contenido para imprimir.")
+            return "break"
+
+        if sys.platform != "win32":
+            messagebox.showerror("Imprimir", "La impresion automatica solo esta soportada en Windows.")
+            return "break"
+
+        temp_path = None
+        try:
+            with tempfile.NamedTemporaryFile("w", encoding="utf-8-sig", suffix=".txt", delete=False) as temp_file:
+                temp_file.write(message)
+                temp_path = temp_file.name
+
+            subprocess.Popen(
+                ["notepad.exe", "/p", temp_path],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            self.after(60000, lambda path=temp_path: self._cleanup_temp_file(path))
+        except Exception as exc:
+            if temp_path:
+                self._cleanup_temp_file(temp_path)
+            messagebox.showerror("Imprimir", f"No se pudo iniciar la impresion: {exc}")
+        return "break"
+
+    @staticmethod
+    def _cleanup_temp_file(path: str):
+        try:
+            Path(path).unlink(missing_ok=True)
+        except Exception:
+            pass
 
     def close_current_tab(self):
         doc = self.current_doc()
